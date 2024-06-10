@@ -17,7 +17,7 @@ class QuotesRepo{
       };
       final jsonString = json.encode(body);
       final uri = Uri.https(ApiConstants.baseUrl,ApiConstants.params);
-      final headers = {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader:'Bearer sk-proj-eLP4CLqBsTsJlhK6aeGIT3BlbkFJkP2qmofKhH2FC0tUP2fO'};
+      final headers = {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader:'Bearer '};
       final response = await client.post(uri, headers: headers, body: jsonString);
 
       print('-------------');
