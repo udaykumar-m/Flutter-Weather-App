@@ -1,4 +1,4 @@
 class ApiConstants {
-  static String baseUrl = 'https://jsonplaceholder.typicode.com';
-  static String usersEndpoint = '/posts';
+  static String baseUrl = 'api.openai.com';
+  static String params = '/v1/chat/completions';
 }
