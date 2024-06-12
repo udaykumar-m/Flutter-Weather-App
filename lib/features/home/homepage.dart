@@ -1,12 +1,31 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openai_app/features/home/internet_connection.dart';
 import 'package:openai_app/features/quotes/UI/quotes_ui.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/quotes/bloc/quotes_bloc.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_){
+      showDialog(context: context, builder: (BuildContext context ) => InternetConnection());
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +34,7 @@ class Homepage extends StatelessWidget {
         centerTitle: true,
         title: Text("AI pal"),
       ),
+
       body: const Column(
         children: [
           Expanded(
@@ -35,9 +55,32 @@ class Homepage extends StatelessWidget {
             )
           ),
           Expanded(
-            flex: 2,
-            child: const Placeholder(),
-          )
+            flex: 3,
+            child: DefaultTabController(
+              initialIndex: 1,
+              length: 3,
+              child: Column(
+                children: [
+                  TabBar(
+                    tabs: [
+                      Tab(icon: Icon(FontAwesomeIcons.instagram)),
+                      Tab(icon: Icon(FontAwesomeIcons.spellCheck)),
+                      Tab(icon: Icon(FontAwesomeIcons.twitter)),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        Icon(FontAwesomeIcons.instagram),
+                        Icon(FontAwesomeIcons.spellCheck),
+                        Icon(FontAwesomeIcons.twitter),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
