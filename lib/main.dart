@@ -14,7 +14,14 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => QuotesBloc(),
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
         home: Homepage(),
       ),

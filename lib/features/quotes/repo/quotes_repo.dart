@@ -11,13 +11,13 @@ class QuotesRepo{
     try {
       final body = {
         "model": "gpt-3.5-turbo",
-        "messages": [{"role": "user", "content":"get one random life quote"}], 
+        "messages": [{"role": "user", "content":"generate a one unique life quote"}], 
         "max_tokens": 100,
         "temperature": 1,
       };
       final jsonString = json.encode(body);
       final uri = Uri.https(ApiConstants.baseUrl,ApiConstants.params);
-      final headers = {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader:'Bearer '};
+      final headers = {HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader:'Bearer sk-proj-eLP4CLqBsTsJlhK6aeGIT3BlbkFJkP2qmofKhH2FC0tUP2fO'};
       final response = await client.post(uri, headers: headers, body: jsonString);
 
       print('-------------');

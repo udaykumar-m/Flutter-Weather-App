@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openai_app/features/quotes/UI/quotes_ui.dart';
@@ -10,12 +12,32 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("AI pal"),
       ),
       body: const Column(
         children: [
-          Quotes(),
-          Buttons(),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                    child: Quotes(),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Buttons(),
+                ),
+              ],
+            )
+          ),
+          Expanded(
+            flex: 2,
+            child: const Placeholder(),
+          )
         ],
       ),
     );
@@ -30,6 +52,7 @@ class Buttons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton.icon(
           onPressed: (){
@@ -39,7 +62,7 @@ class Buttons extends StatelessWidget {
           icon: Icon(Icons.favorite)
         ),
     
-    
+       const SizedBox(width: 15,),
     
         ElevatedButton.icon(
           onPressed: (){

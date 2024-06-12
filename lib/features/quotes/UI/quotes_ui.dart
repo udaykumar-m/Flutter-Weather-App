@@ -31,6 +31,7 @@ class _QuotesBodyState extends State<QuotesBody> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shadowColor: Colors.black87,
       child: BlocBuilder<QuotesBloc, QuotesState>(
         builder: (context, state) {
           switch (state.runtimeType) {
@@ -43,7 +44,9 @@ class _QuotesBodyState extends State<QuotesBody> {
               print("-----------------------------");
               print(responseState.quotes.choices?[0].message?.content);
               return Container(
+                margin: EdgeInsets.only(left: 15, right: 15),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text((responseState.quotes.choices?[0].message?.content).toString()),
                   ],
