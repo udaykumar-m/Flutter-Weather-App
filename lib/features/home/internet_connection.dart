@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InternetConnection extends StatelessWidget {
-  const InternetConnection({super.key});
+  const InternetConnection({super.key, required this.onPressed});
+
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +12,7 @@ class InternetConnection extends StatelessWidget {
       title: const Text('AlertDialog Title'),
       content: const Text('AlertDialog description'),
       actions: <Widget>[
-        ElevatedButton(onPressed: () => {
-        }, child: const Row(
+        ElevatedButton( onPressed: onPressed, child: const Row(
           children: [
             Icon(FontAwesomeIcons.rotateRight),
             Text("Retry"),

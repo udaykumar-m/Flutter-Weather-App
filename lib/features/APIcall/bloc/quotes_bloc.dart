@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:openai_app/features/quotes/model/Open_ai_model.dart';
-import 'package:openai_app/features/quotes/repo/quotes_repo.dart';
+import 'package:openai_app/features/APIcall/model/Open_ai_model.dart';
+import 'package:openai_app/features/APIcall/repo/quotes_repo.dart';
 
 part 'quotes_event.dart';
 part 'quotes_state.dart';

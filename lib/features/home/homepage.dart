@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:openai_app/features/APIcall/UI/tabs_ui.dart';
 import 'package:openai_app/features/home/internet_connection.dart';
-import 'package:openai_app/features/quotes/UI/quotes_ui.dart';
+import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:openai_app/features/quotes/bloc/quotes_bloc.dart';
+import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -31,19 +32,29 @@ class _HomepageState extends State<Homepage> {
     _hasConnection = await InternetConnectionChecker().hasConnection;
     print(_hasConnection);
     print("-------------------------------");
-    if (_hasConnection == true) {
-      
-    }
-    else{
-      WidgetsBinding.instance!.addPostFrameCallback((_){
-      showDialog(context: context, builder: (BuildContext context ) => InternetConnection());
-    });
-    }
+    networkLogic();
     setState(() {
       
     });
   }
 
+
+  void networkLogic(){
+    
+    WidgetsBinding.instance!.addPostFrameCallback((_){
+      if (_hasConnection != true) {
+        showDialog(context: context, builder: (BuildContext context ) => InternetConnection(onPressed: ()async {
+          _hasConnection = await InternetConnectionChecker().hasConnection;
+          if(_hasConnection == true) 
+            Navigator.pop(context);
+          
+          setState(() {
+      
+          });
+        },));
+      }
+    });
+  }
 
 
   @override
@@ -53,9 +64,10 @@ class _HomepageState extends State<Homepage> {
         centerTitle: true,
         title: Text("AI pal"),
       ),
-      body: const Column(
+      body: Column(
         children: [
-          Expanded(
+          if(_hasConnection == true)
+          const Expanded(
             flex: 1,
             child: Column(
               children: [
@@ -72,7 +84,7 @@ class _HomepageState extends State<Homepage> {
               ],
             )
           ),
-          Expanded(
+          const Expanded(
             flex: 3,
             child: DefaultTabController(
               initialIndex: 1,
@@ -89,9 +101,9 @@ class _HomepageState extends State<Homepage> {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        Icon(FontAwesomeIcons.instagram),
-                        Icon(FontAwesomeIcons.spellCheck),
-                        Icon(FontAwesomeIcons.twitter),
+                        tabs(),
+                        tabs(),
+                        tabs(),
                       ],
                     ),
                   ),

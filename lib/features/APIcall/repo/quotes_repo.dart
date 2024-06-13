@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:openai_app/constants.dart';
-import 'package:openai_app/features/quotes/model/Open_ai_model.dart';
+import 'package:openai_app/features/APIcall/model/Open_ai_model.dart';
 
 class QuotesRepo{
   static GetQuotesAPI() async{
