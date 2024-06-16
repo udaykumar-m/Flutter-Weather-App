@@ -5,4 +5,4 @@ sealed class QuotesEvent {}
 
 class GetQuotesInitial extends QuotesEvent {}
 
-class GetQuotes extends QuotesEvent{}
+class GetTabsAPI extends QuotesEvent {}

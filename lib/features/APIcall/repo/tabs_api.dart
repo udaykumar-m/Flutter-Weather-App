@@ -5,14 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:openai_app/constants.dart';
 import 'package:openai_app/features/APIcall/model/Open_ai_model.dart';
 
-class QuotesRepo {
-  static GetQuotesAPI() async {
+class TabsAPI {
+  static GetTabsAPI() async {
     var client = http.Client();
+    var content = '';
     try {
       final body = {
         "model": "gpt-3.5-turbo",
         "messages": [
-          {"role": "user", "content": "generate a one unique life quote"}
+          {"role": "user", "content": content}
         ],
         "max_tokens": 100,
         "temperature": 1,
@@ -26,6 +27,9 @@ class QuotesRepo {
       };
       final response =
           await client.post(uri, headers: headers, body: jsonString);
+
+      print('-------------');
+      print(response.body.toString());
 
       OpenAiRes resp = openAiResFromJson(response.body.toString());
 

@@ -76,6 +76,7 @@ class _HomepageState extends State<Homepage>
         hideKeyboard(context);
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
           title: const Text("AI pal"),
@@ -84,7 +85,7 @@ class _HomepageState extends State<Homepage>
           children: [
             if (_hasConnection == true)
               const Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Column(
                     children: [
                       Expanded(
@@ -94,13 +95,13 @@ class _HomepageState extends State<Homepage>
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(15.0),
+                        padding: EdgeInsets.all(12.0),
                         child: Buttons(),
                       ),
                     ],
                   )),
             Expanded(
-              flex: 3,
+              flex: 7,
               child: DefaultTabController(
                 initialIndex: 1,
                 length: 3,
@@ -108,7 +109,7 @@ class _HomepageState extends State<Homepage>
                   children: [
                     TabBar(
                       controller: _tabController,
-                      tabs: [
+                      tabs: const [
                         Tab(icon: Icon(FontAwesomeIcons.instagram)),
                         Tab(icon: Icon(FontAwesomeIcons.spellCheck)),
                         Tab(icon: Icon(FontAwesomeIcons.twitter)),
@@ -117,10 +118,10 @@ class _HomepageState extends State<Homepage>
                     Expanded(
                       child: TabBarView(
                         controller: _tabController,
-                        children: [
-                          tabs(),
-                          tabs(),
-                          tabs(),
+                        children: const [
+                          tabs(tabPage: "Instagram"),
+                          tabs(tabPage: "meaning"),
+                          tabs(tabPage: "twitter"),
                         ],
                       ),
                     ),

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/quotes_bloc.dart';
 
 // ignore: camel_case_types
 class tabs extends StatefulWidget {
-  const tabs({super.key});
+  final String tabPage;
+
+  const tabs({super.key, required this.tabPage});
 
   @override
   State<tabs> createState() => _tabsState();
@@ -11,13 +16,20 @@ class tabs extends StatefulWidget {
 // ignore: camel_case_types
 class _tabsState extends State<tabs> {
   String searchText = '';
+  String? queryText;
+
+  @override
+  void initState() {
+    super.initState();
+    queryText = widget.tabPage;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(
-          height: 20,
+          height: 15,
         ),
         Padding(
           padding: const EdgeInsets.all(20),
@@ -35,12 +47,15 @@ class _tabsState extends State<tabs> {
                     borderRadius: BorderRadius.circular(35))),
           ),
         ),
-        Expanded(
-            child: Center(
+        Expanded(child: BlocBuilder<QuotesBloc, QuotesState>(
+          builder: (context, state) {
+            return Center(
                 child: Text(
-          searchText,
-          style: const TextStyle(fontSize: 25),
-        )))
+              queryText!,
+              style: const TextStyle(fontSize: 25),
+            ));
+          },
+        ))
       ],
     );
   }

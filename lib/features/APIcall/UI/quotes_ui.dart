@@ -21,7 +21,6 @@ class QuotesBody extends StatefulWidget {
 }
 
 class _QuotesBodyState extends State<QuotesBody> {
-
   @override
   void initState() {
     context.read<QuotesBloc>().add(GetQuotesInitial());
@@ -44,20 +43,20 @@ class _QuotesBodyState extends State<QuotesBody> {
               print("-----------------------------");
               print(responseState.quotes.choices?[0].message?.content);
               return Container(
-                margin: EdgeInsets.only(left: 15, right: 15),
+                margin: const EdgeInsets.only(left: 15, right: 15),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text((responseState.quotes.choices?[0].message?.content).toString()),
+                    Text((responseState.quotes.choices?[0].message?.content)
+                        .toString()),
                   ],
                 ),
               );
             default:
-              return SizedBox();
+              return const SizedBox();
           }
         },
       ),
     );
   }
 }
-
