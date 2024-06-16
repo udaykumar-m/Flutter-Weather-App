@@ -6,9 +6,19 @@ import 'package:openai_app/constants.dart';
 import 'package:openai_app/features/APIcall/model/Open_ai_model.dart';
 
 class TabsAPI {
-  static GetTabsAPI() async {
+  static GetTabsAPI(String searchText, String queryText) async {
     var client = http.Client();
-    var content = '';
+    String? content;
+
+    if (queryText == "meaning") {
+      content = "Define the word $searchText concisely";
+    } else if (queryText == "Instagram") {
+      content =
+          "Create a captivating Instagram caption on :  $searchText concisely";
+    } else if (queryText == "twitter") {
+      content = "Compose a concise tweet about $searchText";
+    }
+
     try {
       final body = {
         "model": "gpt-3.5-turbo",

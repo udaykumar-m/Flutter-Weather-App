@@ -25,7 +25,8 @@ class QuotesBloc extends Bloc<QuotesEvent, QuotesState> {
   FutureOr<void> GetTabsAPIEvent(
       GetTabsAPI event, Emitter<QuotesState> emit) async {
     emit(TabsAPILoadingState());
-    OpenAiRes tabsAPI = await TabsAPI.GetTabsAPI();
+    OpenAiRes tabsAPI =
+        await TabsAPI.GetTabsAPI(event.searchText, event.queryText);
     emit(TabsAPISuccessfullState(TabsAPI: tabsAPI));
   }
 }

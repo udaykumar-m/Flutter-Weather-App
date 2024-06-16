@@ -5,4 +5,8 @@ sealed class QuotesEvent {}
 
 class GetQuotesInitial extends QuotesEvent {}
 
-class GetTabsAPI extends QuotesEvent {}
+class GetTabsAPI extends QuotesEvent {
+  final String searchText;
+  final String queryText;
+  GetTabsAPI({required this.searchText, required this.queryText});
+}
