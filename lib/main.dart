@@ -13,18 +13,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => QuotesBloc(),
-      child: MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
+    return GestureDetector(
+      child: BlocProvider(
+        create: (context) => QuotesBloc(),
+        child: MaterialApp(
+          theme: ThemeData(
+            brightness: Brightness.light,
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+          ),
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+          home: const Homepage(),
         ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-        ),
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
-        home: Homepage(),
       ),
     );
   }

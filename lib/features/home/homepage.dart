@@ -17,13 +17,28 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-    @override
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkInternetConnection();
+
+    _tabController = TabController(initialIndex: 1, length: 3, vsync: this);
+
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging || _tabController.indexIsChanging) {
+        hideKeyboard(context);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   bool? _hasConnection;
@@ -33,87 +48,94 @@ class _HomepageState extends State<Homepage> {
     print(_hasConnection);
     print("-------------------------------");
     networkLogic();
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
-
-  void networkLogic(){
-    
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+  void networkLogic() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_hasConnection != true) {
-        showDialog(context: context, builder: (BuildContext context ) => InternetConnection(onPressed: ()async {
-          _hasConnection = await InternetConnectionChecker().hasConnection;
-          if(_hasConnection == true) 
-            Navigator.pop(context);
-          
-          setState(() {
-      
-          });
-        },));
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => InternetConnection(
+                  onPressed: () async {
+                    _hasConnection =
+                        await InternetConnectionChecker().hasConnection;
+                    if (_hasConnection == true) Navigator.pop(context);
+
+                    setState(() {});
+                  },
+                ));
       }
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("AI pal"),
-      ),
-      body: Column(
-        children: [
-          if(_hasConnection == true)
-          const Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                    child: Quotes(),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Buttons(),
-                ),
-              ],
-            )
-          ),
-          const Expanded(
-            flex: 3,
-            child: DefaultTabController(
-              initialIndex: 1,
-              length: 3,
-              child: Column(
-                children: [
-                  TabBar(
-                    tabs: [
-                      Tab(icon: Icon(FontAwesomeIcons.instagram)),
-                      Tab(icon: Icon(FontAwesomeIcons.spellCheck)),
-                      Tab(icon: Icon(FontAwesomeIcons.twitter)),
+    return GestureDetector(
+      onTap: () {
+        hideKeyboard(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("AI pal"),
+        ),
+        body: Column(
+          children: [
+            if (_hasConnection == true)
+              const Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                          child: Quotes(),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Buttons(),
+                      ),
                     ],
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        tabs(),
-                        tabs(),
-                        tabs(),
+                  )),
+            Expanded(
+              flex: 3,
+              child: DefaultTabController(
+                initialIndex: 1,
+                length: 3,
+                child: Column(
+                  children: [
+                    TabBar(
+                      controller: _tabController,
+                      tabs: [
+                        Tab(icon: Icon(FontAwesomeIcons.instagram)),
+                        Tab(icon: Icon(FontAwesomeIcons.spellCheck)),
+                        Tab(icon: Icon(FontAwesomeIcons.twitter)),
                       ],
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          tabs(),
+                          tabs(),
+                          tabs(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  void hideKeyboard(BuildContext context) {
+    FocusScope.of(context).unfocus();
   }
 }
 
@@ -128,22 +150,18 @@ class Buttons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton.icon(
-          onPressed: (){
-            
-          }, 
-          label: Text("Like"), 
-          icon: Icon(Icons.favorite)
+            onPressed: () {},
+            label: const Text("Like"),
+            icon: const Icon(Icons.favorite)),
+        const SizedBox(
+          width: 15,
         ),
-    
-       const SizedBox(width: 15,),
-    
         ElevatedButton.icon(
-          onPressed: (){
-            context.read<QuotesBloc>().add(GetQuotesInitial());
-          }, 
-          label: Text("Next"), 
-          icon: Icon(Icons.arrow_forward_ios)
-        ),
+            onPressed: () {
+              context.read<QuotesBloc>().add(GetQuotesInitial());
+            },
+            label: const Text("Next"),
+            icon: const Icon(Icons.arrow_forward_ios)),
       ],
     );
   }
