@@ -11,7 +11,8 @@ class TabsAPI {
     String? content;
 
     if (queryText == "Meaning") {
-      content = "Define the word $searchText concisely";
+      content =
+          "Define the word $searchText concisely and also concise sentence using the word $searchText";
     } else if (queryText == "Instagram") {
       content =
           "Create a captivating Instagram caption on :  $searchText concisely";
@@ -37,7 +38,7 @@ class TabsAPI {
       };
       final response =
           await client.post(uri, headers: headers, body: jsonString);
-
+      print(response.body.toString());
       OpenAiRes resp = openAiResFromJson(response.body.toString());
 
       return resp;

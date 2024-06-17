@@ -104,12 +104,12 @@ class _tabsState extends State<tabs> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    queryText == "Meaning"
-                                        ? Text('$queryText : ',
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold))
-                                        : const Text(''),
+                                    // queryText == "Meaning"
+                                    //     ? Text('$queryText : ',
+                                    //         style: const TextStyle(
+                                    //             fontSize: 18,
+                                    //             fontWeight: FontWeight.bold))
+                                    //     : const Text(''),
                                     Expanded(
                                       child: Text(
                                         utf8.decode((responseState.TabsAPI
