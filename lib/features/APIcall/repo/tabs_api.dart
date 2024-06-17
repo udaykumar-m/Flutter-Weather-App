@@ -10,7 +10,7 @@ class TabsAPI {
     var client = http.Client();
     String? content;
 
-    if (queryText == "meaning") {
+    if (queryText == "Meaning") {
       content = "Define the word $searchText concisely";
     } else if (queryText == "Instagram") {
       content =
@@ -37,9 +37,6 @@ class TabsAPI {
       };
       final response =
           await client.post(uri, headers: headers, body: jsonString);
-
-      print('-------------');
-      print(response.body.toString());
 
       OpenAiRes resp = openAiResFromJson(response.body.toString());
 

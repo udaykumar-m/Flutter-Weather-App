@@ -120,8 +120,8 @@ class _HomepageState extends State<Homepage>
                         controller: _tabController,
                         children: const [
                           tabs(tabPage: "Instagram"),
-                          tabs(tabPage: "meaning"),
-                          tabs(tabPage: "twitter"),
+                          tabs(tabPage: "Meaning"),
+                          tabs(tabPage: "Twitter"),
                         ],
                       ),
                     ),

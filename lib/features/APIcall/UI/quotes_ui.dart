@@ -40,8 +40,6 @@ class _QuotesBodyState extends State<QuotesBody> {
               );
             case QuotesSuccessfullState:
               final responseState = state as QuotesSuccessfullState;
-              print("-----------------------------");
-              print(responseState.quotes.choices?[0].message?.content);
               return Container(
                 margin: const EdgeInsets.only(left: 15, right: 15),
                 child: Column(

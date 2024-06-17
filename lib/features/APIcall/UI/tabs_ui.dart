@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../bloc/quotes_bloc.dart';
 
@@ -19,11 +20,24 @@ class tabs extends StatefulWidget {
 class _tabsState extends State<tabs> {
   String searchText = '';
   String queryText = '';
+  String content = '';
 
   @override
   void initState() {
     super.initState();
     queryText = widget.tabPage;
+    switch (queryText) {
+      case 'Meaning':
+        content = "Meaning & Usage";
+        break;
+      case 'Instagram':
+        content = "Instagram Caption";
+        break;
+      case 'Twitter':
+        content = "Generate Tweet";
+        break;
+      default:
+    }
   }
 
   @override
@@ -33,6 +47,8 @@ class _tabsState extends State<tabs> {
         const SizedBox(
           height: 15,
         ),
+        Text(content,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         Padding(
           padding: const EdgeInsets.all(20),
           child: TextField(
@@ -77,15 +93,58 @@ class _tabsState extends State<tabs> {
                     case TabsAPISuccessfullState:
                       final responseState = state as TabsAPISuccessfullState;
                       return Container(
-                        margin: const EdgeInsets.only(left: 15, right: 15),
+                        margin:
+                            const EdgeInsets.only(left: 15, right: 15, top: 0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(utf8.decode((responseState
-                                    .TabsAPI.choices?[0].message?.content)
-                                .toString()
-                                .runes
-                                .toList())),
+                            Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    queryText == "Meaning"
+                                        ? Text('$queryText : ',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold))
+                                        : const Text(''),
+                                    Expanded(
+                                      child: Text(
+                                        utf8.decode((responseState.TabsAPI
+                                                .choices?[0].message?.content)
+                                            .toString()
+                                            .runes
+                                            .toList()),
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                                onPressed: () => {
+                                      context.read<QuotesBloc>().add(GetTabsAPI(
+                                          searchText: searchText,
+                                          queryText: queryText))
+                                    },
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesomeIcons.rotateRight),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      "Regenerate",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ))
                           ],
                         ),
                       );
@@ -93,7 +152,10 @@ class _tabsState extends State<tabs> {
                       return const SizedBox();
                   }
                 },
-              ))
+              )),
+        const SizedBox(
+          height: 30,
+        ),
       ],
     );
   }
