@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:openai_app/features/APIcall/UI/tabs_ui.dart';
 import 'package:openai_app/features/APIcall/bloc/tabs_bloc.dart';
 import 'package:openai_app/features/APIcall/repo/networkLogic.dart';
-import 'package:openai_app/features/home/internet_connection.dart';
 import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
@@ -198,8 +194,9 @@ class _ButtonsState extends State<Buttons> {
                   _hasConnection = true;
                 });
               });
-              if (_hasConnection == true)
+              if (_hasConnection == true) {
                 context.read<QuotesBloc>().add(GetQuotesInitial());
+              }
             },
             label: const Text("Next"),
             icon: const Icon(Icons.arrow_forward_ios)),
