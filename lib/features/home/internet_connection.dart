@@ -9,8 +9,8 @@ class InternetConnection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('AlertDialog Title'),
-      content: const Text('AlertDialog description'),
+      title: const Text('Network Error'),
+      content: const Text('Please check you network connection and try again'),
       actions: <Widget>[
         ElevatedButton( onPressed: onPressed, child: const Row(
           children: [
