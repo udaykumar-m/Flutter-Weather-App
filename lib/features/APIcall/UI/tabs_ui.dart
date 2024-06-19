@@ -21,6 +21,9 @@ class _tabsState extends State<tabs> {
   String searchText = '';
   String queryText = '';
   String content = '';
+  bool textBox = false;
+
+  TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -52,9 +55,11 @@ class _tabsState extends State<tabs> {
         Padding(
           padding: const EdgeInsets.all(20),
           child: TextField(
+            controller: textController,
             onTapOutside: (event) {},
             onSubmitted: (value) {
               setState(() {
+                textBox = true;
                 searchText = value;
               });
               if (searchText != '' && queryText != '') {
@@ -63,6 +68,10 @@ class _tabsState extends State<tabs> {
               }
             },
             decoration: InputDecoration(
+              suffixIcon: textBox ? IconButton(onPressed :() { setState(() {
+                textController.clear();
+                textBox = false;
+              });}, icon: Icon(FontAwesomeIcons.circleXmark)) : null,
                 contentPadding: const EdgeInsets.only(left: 25, right: 25),
                 hintText: "Enter text to search... ",
                 border: OutlineInputBorder(
