@@ -9,15 +9,28 @@ class InternetConnection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Network Error'),
+      title: const Row(
+        children: [
+          Text('Network Error  '),
+          Icon(Icons.wifi_off, color: Colors.red)
+        ],
+      ),
       content: const Text('Please check you network connection and try again'),
       actions: <Widget>[
-        ElevatedButton( onPressed: onPressed, child: const Row(
-          children: [
-            Icon(FontAwesomeIcons.rotateRight),
-            Text("Retry"),
-          ],
-        ))
+        ElevatedButton(
+            onPressed: onPressed,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(FontAwesomeIcons.rotateRight),
+                SizedBox(width: 20),
+                Text(
+                  "Retry",
+                  style: TextStyle(fontSize: 22),
+                ),
+                SizedBox(width: 20),
+              ],
+            ))
       ],
     );
   }

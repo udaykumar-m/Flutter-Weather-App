@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:openai_app/features/APIcall/UI/tabs_ui.dart';
+import 'package:openai_app/features/APIcall/bloc/tabs_bloc.dart';
+import 'package:openai_app/features/APIcall/repo/networkLogic.dart';
 import 'package:openai_app/features/home/internet_connection.dart';
 import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,29 +46,13 @@ class _HomepageState extends State<Homepage>
   bool? _hasConnection;
 
   Future<void> checkInternetConnection() async {
-    _hasConnection = await InternetConnectionChecker().hasConnection;
-    print(_hasConnection);
-    print("-------------------------------");
-    networkLogic();
-    setState(() {});
-  }
-
-  void networkLogic() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (_hasConnection != true) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) => InternetConnection(
-                  onPressed: () async {
-                    _hasConnection =
-                        await InternetConnectionChecker().hasConnection;
-                    if (_hasConnection == true) Navigator.pop(context);
-
-                    setState(() {});
-                  },
-                ));
-      }
+    _hasConnection = await networkLogicClass().networkConnection();
+    networkLogicClass.networkLogic(context, _hasConnection, () {
+      setState(() {
+        _hasConnection = true;
+      });
     });
+    setState(() {});
   }
 
   @override
@@ -84,45 +70,51 @@ class _HomepageState extends State<Homepage>
         body: Column(
           children: [
             if (_hasConnection == true)
-              const Expanded(
-                  flex: 2,
+              BlocProvider(
+                create: (context) => QuotesBloc(),
+                child: const Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
+                            child: Quotes(),
+                          ),
+                        ),
+                        Buttons(),
+                      ],
+                    )),
+              ),
+            BlocProvider(
+              create: (context) => TabsBloc(),
+              child: Expanded(
+                flex: 7,
+                child: DefaultTabController(
+                  initialIndex: 1,
+                  length: 3,
                   child: Column(
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
-                          child: Quotes(),
-                        ),
-                      ),
-                      Buttons(),
-                    ],
-                  )),
-            Expanded(
-              flex: 7,
-              child: DefaultTabController(
-                initialIndex: 1,
-                length: 3,
-                child: Column(
-                  children: [
-                    TabBar(
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(icon: Icon(FontAwesomeIcons.instagram)),
-                        Tab(icon: Icon(FontAwesomeIcons.spellCheck)),
-                        Tab(icon: Icon(FontAwesomeIcons.twitter)),
-                      ],
-                    ),
-                    Expanded(
-                      child: TabBarView(
+                      TabBar(
                         controller: _tabController,
-                        children: const [
-                          tabs(tabPage: "Instagram"),
-                          tabs(tabPage: "Meaning"),
-                          tabs(tabPage: "Twitter"),
+                        tabs: const [
+                          Tab(icon: Icon(FontAwesomeIcons.instagram)),
+                          Tab(icon: Icon(FontAwesomeIcons.spellCheck)),
+                          Tab(icon: Icon(FontAwesomeIcons.twitter)),
                         ],
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: const [
+                            tabs(tabPage: "Instagram"),
+                            tabs(tabPage: "Meaning"),
+                            tabs(tabPage: "Twitter"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -137,10 +129,53 @@ class _HomepageState extends State<Homepage>
   }
 }
 
-class Buttons extends StatelessWidget {
+class Buttons extends StatefulWidget {
   const Buttons({
     super.key,
   });
+
+  @override
+  State<Buttons> createState() => _ButtonsState();
+}
+
+class _ButtonsState extends State<Buttons> {
+  void showToast(BuildContext context) {
+    bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    print(isDarkTheme);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RichText(
+            text: TextSpan(
+              text: "Saving ",
+              style:
+                  TextStyle(color: isDarkTheme ? Colors.black : Colors.white),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "Quotes",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isDarkTheme ? Colors.black : Colors.white),
+                ),
+                TextSpan(
+                  text: " will be available from next Update",
+                  style: TextStyle(
+                      color: isDarkTheme ? Colors.black : Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      behavior: SnackBarBehavior.floating,
+      // width: 260.0,
+      duration: const Duration(milliseconds: 1500),
+      elevation: 0,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,15 +183,23 @@ class Buttons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () => showToast(context),
             label: const Text("Like"),
             icon: const Icon(Icons.favorite)),
         const SizedBox(
           width: 15,
         ),
         ElevatedButton.icon(
-            onPressed: () {
-              context.read<QuotesBloc>().add(GetQuotesInitial());
+            onPressed: () async {
+              bool _hasConnection =
+                  await networkLogicClass().networkConnection();
+              networkLogicClass.networkLogic(context, _hasConnection, () {
+                setState(() {
+                  _hasConnection = true;
+                });
+              });
+              if (_hasConnection == true)
+                context.read<QuotesBloc>().add(GetQuotesInitial());
             },
             label: const Text("Next"),
             icon: const Icon(Icons.arrow_forward_ios)),

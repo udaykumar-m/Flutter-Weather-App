@@ -13,12 +13,3 @@ class QuotesSuccessfullState extends QuotesState {
   OpenAiRes quotes;
   QuotesSuccessfullState({required this.quotes});
 }
-
-class TabsAPILoadingState extends QuotesState {}
-
-class TabsAPIErrorState extends QuotesState {}
-
-class TabsAPISuccessfullState extends QuotesState {
-  OpenAiRes TabsAPI;
-  TabsAPISuccessfullState({required this.TabsAPI});
-}

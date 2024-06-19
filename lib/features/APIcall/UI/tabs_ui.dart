@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:openai_app/features/APIcall/bloc/tabs_bloc.dart';
 
 import '../bloc/quotes_bloc.dart';
+import '../repo/networkLogic.dart';
 
 // ignore: camel_case_types
 class tabs extends StatefulWidget {
@@ -24,6 +26,21 @@ class _tabsState extends State<tabs> {
   bool textBox = false;
 
   TextEditingController textController = TextEditingController();
+
+  bool? _hasConnection;
+
+  Future<void> networkLogic() async {
+    _hasConnection = await networkLogicClass().networkConnection();
+    networkLogicClass.networkLogic(context, _hasConnection, () {
+      setState(() {
+        _hasConnection = true;
+        context
+            .read<TabsBloc>()
+            .add(GetTabsAPI(searchText: searchText, queryText: queryText));
+      });
+    });
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -57,21 +74,30 @@ class _tabsState extends State<tabs> {
           child: TextField(
             controller: textController,
             onTapOutside: (event) {},
-            onSubmitted: (value) {
+            onSubmitted: (value) async {
+              await networkLogic();
               setState(() {
                 textBox = true;
                 searchText = value;
               });
-              if (searchText != '' && queryText != '') {
-                context.read<QuotesBloc>().add(
+              if (searchText != '' &&
+                  queryText != '' &&
+                  _hasConnection == true) {
+                context.read<TabsBloc>().add(
                     GetTabsAPI(searchText: searchText, queryText: queryText));
               }
             },
             decoration: InputDecoration(
-              suffixIcon: textBox ? IconButton(onPressed :() { setState(() {
-                textController.clear();
-                textBox = false;
-              });}, icon: Icon(FontAwesomeIcons.circleXmark)) : null,
+                suffixIcon: textBox
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            textController.clear();
+                            textBox = false;
+                          });
+                        },
+                        icon: const Icon(FontAwesomeIcons.circleXmark))
+                    : null,
                 contentPadding: const EdgeInsets.only(left: 25, right: 25),
                 hintText: "Enter text to search... ",
                 border: OutlineInputBorder(
@@ -92,7 +118,7 @@ class _tabsState extends State<tabs> {
                   ],
                 ),
               )
-            : Expanded(child: BlocBuilder<QuotesBloc, QuotesState>(
+            : Expanded(child: BlocBuilder<TabsBloc, TabsState>(
                 builder: (context, state) {
                   switch (state.runtimeType) {
                     case TabsAPILoadingState:
@@ -134,11 +160,14 @@ class _tabsState extends State<tabs> {
                               ),
                             ),
                             ElevatedButton(
-                                onPressed: () => {
-                                      context.read<QuotesBloc>().add(GetTabsAPI(
-                                          searchText: searchText,
-                                          queryText: queryText))
-                                    },
+                                onPressed: () async {
+                                  await networkLogic();
+                                  if (_hasConnection == true) {
+                                    context.read<TabsBloc>().add(GetTabsAPI(
+                                        searchText: searchText,
+                                        queryText: queryText));
+                                  }
+                                },
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
