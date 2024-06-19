@@ -90,14 +90,11 @@ class _HomepageState extends State<Homepage>
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                          padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
                           child: Quotes(),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Buttons(),
-                      ),
+                      Buttons(),
                     ],
                   )),
             Expanded(

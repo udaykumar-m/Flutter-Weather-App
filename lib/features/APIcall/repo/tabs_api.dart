@@ -16,7 +16,7 @@ class TabsAPI {
     } else if (queryText == "Instagram") {
       content =
           "Create a captivating Instagram caption on :  $searchText concisely";
-    } else if (queryText == "twitter") {
+    } else if (queryText == "Twitter") {
       content = "Compose a concise tweet about $searchText";
     }
 
