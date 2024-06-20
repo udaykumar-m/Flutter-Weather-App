@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:openai_app/features/APIcall/repo/networkLogic.dart';
 import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
+import 'package:openai_app/features/Favorites/UI/Favorites.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -62,6 +64,9 @@ class _HomepageState extends State<Homepage>
         appBar: AppBar(
           centerTitle: true,
           title: const Text("AI pal"),
+          actions: [
+            IconButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Favorites())), icon: const Icon(Icons.favorite))
+          ],
         ),
         body: Column(
           children: [
