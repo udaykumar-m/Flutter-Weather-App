@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:openai_app/constants.dart';
 import 'package:openai_app/features/APIcall/model/Open_ai_model.dart';
@@ -34,7 +35,7 @@ class TabsAPI {
       final headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            'Bearer sk-proj-eLP4CLqBsTsJlhK6aeGIT3BlbkFJkP2qmofKhH2FC0tUP2fO'
+            "Bearer ${dotenv.env['TOKEN'] ?? ''}"
       };
       final response =
           await client.post(uri, headers: headers, body: jsonString);
