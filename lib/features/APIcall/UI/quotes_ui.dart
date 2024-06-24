@@ -34,38 +34,36 @@ class _QuotesBodyState extends State<QuotesBody> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async =>{
-        await Clipboard.setData(ClipboardData(text: copyText))
+    return CustomTooltip(
+      message: 'The Quote is copied!',
+      onTap: () async {
+        await Clipboard.setData(ClipboardData(text: copyText));
       },
-      child: CustomTooltip(
-        message: 'The Quote is copied!',
-        child: Card(
-          shadowColor: Colors.black87,
-          child: BlocBuilder<QuotesBloc, QuotesState>(
-            builder: (context, state) {
-              switch (state.runtimeType) {
-                case QuotesLoadingState:
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case QuotesSuccessfullState:
-                  final responseState = state as QuotesSuccessfullState;
-                  copyText =(responseState.quotes.choices?[0].message?.content).toString();
-                  return Container(
-                    margin: const EdgeInsets.only(left: 15, right: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(copyText),
-                      ],
-                    ),
-                  );
-                default:
-                  return const SizedBox();
-              }
-            },
-          ),
+      child: Card(
+        shadowColor: Colors.black87,
+        child: BlocBuilder<QuotesBloc, QuotesState>(
+          builder: (context, state) {
+            switch (state.runtimeType) {
+              case QuotesLoadingState:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case QuotesSuccessfullState:
+                final responseState = state as QuotesSuccessfullState;
+                copyText =(responseState.quotes.choices?[0].message?.content).toString();
+                return Container(
+                  margin: const EdgeInsets.only(left: 15, right: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(copyText),
+                    ],
+                  ),
+                );
+              default:
+                return const SizedBox();
+            }
+          },
         ),
       ),
     );

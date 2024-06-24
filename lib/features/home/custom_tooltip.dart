@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 class CustomTooltip extends StatefulWidget {
   final Widget child;
   final String message;
+  final void Function()? onTap;
 
-  CustomTooltip({required this.child, required this.message});
+
+
+  CustomTooltip({required this.child, required this.message, required this.onTap});
 
   @override
   _CustomTooltipState createState() => _CustomTooltipState();
@@ -17,7 +20,10 @@ class _CustomTooltipState extends State<CustomTooltip> {
   Widget build(BuildContext context) {
     return GestureDetector(
       key: _key,
-      onTap: _showTooltip,
+      onTap: () async {
+        _showTooltip();
+        widget.onTap!();
+      },
       child: widget.child,
     );
   }

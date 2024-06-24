@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/tabs_bloc.dart';
@@ -23,8 +24,9 @@ class _tabsState extends State<tabs> {
   String searchText = '';
   String queryText = '';
   String content = '';
-  bool textBox = false;
+  var copyTabText = '';
 
+  bool textBox = false;
   TextEditingController textController = TextEditingController();
 
   bool? _hasConnection;
@@ -127,6 +129,7 @@ class _tabsState extends State<tabs> {
                       );
                     case TabsAPISuccessfullState:
                       final responseState = state as TabsAPISuccessfullState;
+                      copyTabText = utf8.decode((responseState.TabsAPI.choices?[0].message?.content).toString().runes.toList());
                       return Container(
                         margin:
                             const EdgeInsets.only(left: 15, right: 15, top: 0),
@@ -134,6 +137,9 @@ class _tabsState extends State<tabs> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomTooltip(
+                              onTap: () async {
+                                await Clipboard.setData(ClipboardData(text: copyTabText));
+                              },
                               message: 'Text copied!',
                               child: Card(
                                 child: Padding(
@@ -148,12 +154,7 @@ class _tabsState extends State<tabs> {
                                       //             fontWeight: FontWeight.bold))
                                       //     : const Text(''),
                                       Expanded(
-                                        child: Text(
-                                          utf8.decode((responseState.TabsAPI
-                                                  .choices?[0].message?.content)
-                                              .toString()
-                                              .runes
-                                              .toList()),
+                                        child: Text(copyTabText,
                                           style: const TextStyle(fontSize: 18),
                                         ),
                                       ),
