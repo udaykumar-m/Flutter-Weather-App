@@ -29,15 +29,15 @@ class _CustomTooltipState extends State<CustomTooltip> {
 
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        left: targetOffset.dx + (targetSize.width/4),
+        left: targetOffset.dx + (targetSize.width / 2) - 75,
         top: targetOffset.dy - 45, // Adjust this value to position the tooltip
         child: Material(
           color: const Color.fromARGB(0, 41, 41, 41),
           child: CustomPaint(
             painter: TooltipPainter(),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              margin: EdgeInsets.only(bottom: 10), // Adjust this for V shape spacing
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: const EdgeInsets.only(bottom: 10), // Adjust this for V shape spacing
               child: Text(
                 widget.message,
                 style: TextStyle(color: Colors.white),
@@ -48,9 +48,9 @@ class _CustomTooltipState extends State<CustomTooltip> {
       ),
     );
 
-    Overlay.of(context)!.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
 
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       _overlayEntry?.remove();
     });
   }

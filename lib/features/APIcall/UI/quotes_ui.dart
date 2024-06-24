@@ -40,8 +40,6 @@ class _QuotesBodyState extends State<QuotesBody> {
       },
       child: CustomTooltip(
         message: 'The Quote is copied!',
-
-
         child: Card(
           shadowColor: Colors.black87,
           child: BlocBuilder<QuotesBloc, QuotesState>(

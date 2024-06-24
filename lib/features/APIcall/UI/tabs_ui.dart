@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/tabs_bloc.dart';
+import 'package:openai_app/features/home/custom_tooltip.dart';
 
 import '../repo/networkLogic.dart';
 
@@ -132,29 +133,32 @@ class _tabsState extends State<tabs> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // queryText == "Meaning"
-                                    //     ? Text('$queryText : ',
-                                    //         style: const TextStyle(
-                                    //             fontSize: 18,
-                                    //             fontWeight: FontWeight.bold))
-                                    //     : const Text(''),
-                                    Expanded(
-                                      child: Text(
-                                        utf8.decode((responseState.TabsAPI
-                                                .choices?[0].message?.content)
-                                            .toString()
-                                            .runes
-                                            .toList()),
-                                        style: const TextStyle(fontSize: 18),
+                            CustomTooltip(
+                              message: 'Text copied!',
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // queryText == "Meaning"
+                                      //     ? Text('$queryText : ',
+                                      //         style: const TextStyle(
+                                      //             fontSize: 18,
+                                      //             fontWeight: FontWeight.bold))
+                                      //     : const Text(''),
+                                      Expanded(
+                                        child: Text(
+                                          utf8.decode((responseState.TabsAPI
+                                                  .choices?[0].message?.content)
+                                              .toString()
+                                              .runes
+                                              .toList()),
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
