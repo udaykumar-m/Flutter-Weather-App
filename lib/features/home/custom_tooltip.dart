@@ -6,7 +6,7 @@ class CustomTooltip extends StatefulWidget {
 
 
 
-  CustomTooltip({required this.child, required this.message, required this.onTap});
+  const CustomTooltip({super.key, required this.child, required this.message, required this.onTap});
 
   @override
   _CustomTooltipState createState() => _CustomTooltipState();
@@ -46,7 +46,7 @@ class _CustomTooltipState extends State<CustomTooltip> {
               margin: const EdgeInsets.only(bottom: 10), // Adjust this for V shape spacing
               child: Text(
                 widget.message,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
@@ -72,7 +72,7 @@ class TooltipPainter extends CustomPainter {
     Path path = Path()
       ..addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, size.width, size.height - 10), // Adjust height for the V shape
-        Radius.circular(20),
+        const Radius.circular(20),
       ));
 
     Path vPath = Path()

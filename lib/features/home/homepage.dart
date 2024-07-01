@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openai_app/features/APIcall/UI/tabs_ui.dart';
 import 'package:openai_app/features/APIcall/bloc/tabs_bloc.dart';
@@ -192,14 +190,14 @@ class _ButtonsState extends State<Buttons> {
         ),
         ElevatedButton.icon(
             onPressed: () async {
-              bool _hasConnection =
+              bool hasConnection =
                   await networkLogicClass().networkConnection();
-              networkLogicClass.networkLogic(context, _hasConnection, () {
+              networkLogicClass.networkLogic(context, hasConnection, () {
                 setState(() {
-                  _hasConnection = true;
+                  hasConnection = true;
                 });
               });
-              if (_hasConnection == true) {
+              if (hasConnection == true) {
                 context.read<QuotesBloc>().add(GetQuotesInitial());
               }
             },

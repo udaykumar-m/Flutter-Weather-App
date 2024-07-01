@@ -19,11 +19,11 @@ void showBottomSheetModal(context) {
 
 class Modal extends StatefulWidget {
   const Modal({
-    Key? key,
+    super.key,
     required this.items,
     required this.test,
     required this.selectedItems, 
-  }) : super(key: key);
+  });
 
   final List<String> items;
   final List<String> test;
@@ -108,33 +108,36 @@ class _ModalState extends State<Modal> {
                       );
                     },
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      displayItems == widget.test ?
-                      ElevatedButton(onPressed: (){
-                        setState(() {
-                          displayItems = widget.items;
-                        });
-                      }, 
-                      child: const Row(
-                        children: [
-                        Icon(Icons.arrow_left),
-                        Text("Prev"),
-                        ],
-                      )) : const SizedBox(),
-                      ElevatedButton(onPressed: (){
-                        setState(() {
-                          displayItems = widget.test;
-                        });
-                      }, 
-                      child: const Row(
-                        children: [
-                        Text("Next"),
-                        Icon(Icons.arrow_right),
-                        ],
-                      )),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        displayItems == widget.test ?
+                        ElevatedButton(onPressed: (){
+                          setState(() {
+                            displayItems = widget.items;
+                          });
+                        }, 
+                        child: const Row(
+                          children: [
+                          Icon(Icons.arrow_left),
+                          Text("Prev"),
+                          ],
+                        )) : const SizedBox(),
+                        ElevatedButton(onPressed: (){
+                          setState(() {
+                            displayItems = widget.test;
+                          });
+                        }, 
+                        child: const Row(
+                          children: [
+                          Text("Next"),
+                          Icon(Icons.arrow_right),
+                          ],
+                        )),
+                      ],
+                    ),
                   )
                 ],
               ),

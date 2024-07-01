@@ -11,7 +11,7 @@ class Quotes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QuotesBody();
+    return const QuotesBody();
   }
 }
 
