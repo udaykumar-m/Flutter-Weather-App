@@ -1,33 +1,32 @@
  import 'package:flutter/material.dart';
+import 'package:openai_app/features/local_storage.dart';
 
 void showBottomSheetModal(context) {
 
-   final List<String> items = ["Item 1", "Item 2", "Item 3", "Item 4"];
-   final List<String> test = ["Test ", "Test 2", "Test 3", "Test 4"];
+   final List<String> language = ["Hindi", "English", "Telugu",];
+   final List<String> topics = ["Sports", "Movie", "life", "Love", "Breakup", "Work"];
 
-  final List<String> selectedItems = [];
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isDismissible: true,
       context: context,
       builder: (context) {
-        return Modal(items: items, test:test, selectedItems: selectedItems);
+        return Modal(items: language, test:topics);
       },
     );
   }
 
 class Modal extends StatefulWidget {
-  const Modal({
+  Modal({
     super.key,
     required this.items,
     required this.test,
-    required this.selectedItems, 
   });
 
   final List<String> items;
   final List<String> test;
-  final List<String> selectedItems;
+  List<String> selectedItems = ["English"];
 
   @override
   _ModalState createState() => _ModalState();
@@ -87,7 +86,7 @@ class _ModalState extends State<Modal> {
                             if (isSelected) {
                               widget.selectedItems.remove(item);
                             } else {
-                              widget.selectedItems.add(item);
+                              displayItems == widget.items ? widget.selectedItems[0] = item : widget.selectedItems.add(item);
                             }
                           });
                         },
@@ -126,9 +125,15 @@ class _ModalState extends State<Modal> {
                           ],
                         )) : const SizedBox(),
                         ElevatedButton(onPressed: (){
-                          setState(() {
-                            displayItems = widget.test;
-                          });
+                          if (displayItems == widget.test) {
+                            setData(widget.selectedItems);
+                            Navigator.of(context).pop();
+                          }
+                          else {
+                            setState(() {
+                              displayItems = widget.test;
+                            });
+                          }
                         }, 
                         child: const Row(
                           children: [
