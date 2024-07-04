@@ -7,6 +7,7 @@ import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
 import 'package:openai_app/features/Favorites/UI/Favorites.dart';
+import 'package:openai_app/features/home/bottom_sheet.dart';
 import 'package:openai_app/features/local_storage.dart';
 
 class Homepage extends StatefulWidget {
@@ -23,7 +24,6 @@ class _HomepageState extends State<Homepage>
   @override
   void initState() {
     super.initState();
-
     PreferenceHelper.initiate();
 
     checkInternetConnection();
@@ -57,6 +57,14 @@ class _HomepageState extends State<Homepage>
 
   @override
   Widget build(BuildContext context) {
+    // PreferenceHelper.clear();
+    print(PreferenceHelper.getString('language'));
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   PreferenceHelper.getString('language') == ''
+    //       ? showBottomSheetModal(context)
+    //       : null;
+    // });
+
     return GestureDetector(
       onTap: () {
         hideKeyboard(context);

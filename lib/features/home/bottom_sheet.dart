@@ -16,9 +16,6 @@ void showBottomSheetModal(context) {
     "Work"
   ];
 
-  print("Language: ");
-  print(PreferenceHelper.getString('language'));
-
   showModalBottomSheet(
     backgroundColor: Colors.transparent,
     isDismissible: true,
@@ -59,15 +56,20 @@ class _ModalState extends State<Modal> {
       children: [
         Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2.0),
-                    color: Colors.white),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: const Icon(Icons.close),
+                child: Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2.0),
+                      color: Colors.white),
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(Icons.close),
+                ),
               ),
             ),
             Container(
