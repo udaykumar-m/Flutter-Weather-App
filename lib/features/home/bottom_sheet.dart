@@ -18,7 +18,7 @@ void showBottomSheetModal(context) {
   }
 
 class Modal extends StatefulWidget {
-  Modal({
+  const Modal({
     super.key,
     required this.items,
     required this.test,
@@ -26,7 +26,6 @@ class Modal extends StatefulWidget {
 
   final List<String> items;
   final List<String> test;
-  List<String> selectedItems = ["English"];
 
   @override
   _ModalState createState() => _ModalState();
@@ -40,6 +39,7 @@ class _ModalState extends State<Modal> {
   }
 
   late List<String> displayItems;
+  List<String> selectedItems = ["English"];
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +79,14 @@ class _ModalState extends State<Modal> {
                     itemCount: displayItems.length,
                     itemBuilder: (context, index) {
                       final item = displayItems[index];
-                      final isSelected = widget.selectedItems.contains(item);
+                      final isSelected = selectedItems.contains(item);
                       return GestureDetector(
                         onTap: () {
                           setState(() {
                             if (isSelected) {
-                              widget.selectedItems.remove(item);
+                              selectedItems.remove(item);
                             } else {
-                              displayItems == widget.items ? widget.selectedItems[0] = item : widget.selectedItems.add(item);
+                              displayItems == widget.items ? selectedItems[0] = item : selectedItems.add(item);
                             }
                           });
                         },
@@ -126,7 +126,7 @@ class _ModalState extends State<Modal> {
                         )) : const SizedBox(),
                         ElevatedButton(onPressed: (){
                           if (displayItems == widget.test) {
-                            setData(widget.selectedItems);
+                            setData(selectedItems);
                             Navigator.of(context).pop();
                           }
                           else {
