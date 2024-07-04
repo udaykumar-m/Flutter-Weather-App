@@ -10,6 +10,6 @@ class QuotesLoadingState extends QuotesState {}
 class QuotesErrorState extends QuotesState {}
 
 class QuotesSuccessfullState extends QuotesState {
-  OpenAiRes quotes;
+  final OpenAiRes quotes;
   QuotesSuccessfullState({required this.quotes});
 }

@@ -10,6 +10,6 @@ class TabsAPILoadingState extends TabsState {}
 class TabsAPIErrorState extends TabsState {}
 
 class TabsAPISuccessfullState extends TabsState {
-  OpenAiRes TabsAPI;
+  final OpenAiRes TabsAPI;
   TabsAPISuccessfullState({required this.TabsAPI});
 }
