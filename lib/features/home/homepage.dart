@@ -7,6 +7,7 @@ import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
 import 'package:openai_app/features/Favorites/UI/Favorites.dart';
+import 'package:openai_app/features/local_storage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -22,6 +23,9 @@ class _HomepageState extends State<Homepage>
   @override
   void initState() {
     super.initState();
+
+    PreferenceHelper.initiate();
+
     checkInternetConnection();
 
     _tabController = TabController(initialIndex: 1, length: 3, vsync: this);
@@ -63,7 +67,10 @@ class _HomepageState extends State<Homepage>
           centerTitle: true,
           title: const Text("AI pal"),
           actions: [
-            IconButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Favorites())), icon: const Icon(Icons.favorite))
+            IconButton(
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Favorites())),
+                icon: const Icon(Icons.favorite))
           ],
         ),
         body: Column(

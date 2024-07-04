@@ -1,21 +1,33 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:openai_app/features/local_storage.dart';
 
 void showBottomSheetModal(context) {
+  final List<String> language = [
+    "Hindi",
+    "English",
+    "Telugu",
+  ];
+  final List<String> topics = [
+    "Sports",
+    "Movie",
+    "life",
+    "Love",
+    "Breakup",
+    "Work"
+  ];
 
-   final List<String> language = ["Hindi", "English", "Telugu",];
-   final List<String> topics = ["Sports", "Movie", "life", "Love", "Breakup", "Work"];
+  print("Language: ");
+  print(PreferenceHelper.getString('language'));
 
-
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      isDismissible: true,
-      context: context,
-      builder: (context) {
-        return Modal(items: language, test:topics);
-      },
-    );
-  }
+  showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    isDismissible: true,
+    context: context,
+    builder: (context) {
+      return Modal(items: language, test: topics);
+    },
+  );
+}
 
 class Modal extends StatefulWidget {
   const Modal({
@@ -51,25 +63,25 @@ class _ModalState extends State<Modal> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2.0),
-                              color: Colors.white
-                            ),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2.0),
+                    color: Colors.white),
                 padding: const EdgeInsets.all(8.0),
                 child: const Icon(Icons.close),
-        
               ),
             ),
             Container(
-               decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-                            color: Colors.white
-                          ),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
+                  color: Colors.white),
               padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
               child: Column(
                 children: [
                   GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 8.0,
                       mainAxisSpacing: 8.0,
@@ -86,7 +98,9 @@ class _ModalState extends State<Modal> {
                             if (isSelected) {
                               selectedItems.remove(item);
                             } else {
-                              displayItems == widget.items ? selectedItems[0] = item : selectedItems.add(item);
+                              displayItems == widget.items
+                                  ? selectedItems[0] = item
+                                  : selectedItems.add(item);
                             }
                           });
                         },
@@ -112,41 +126,46 @@ class _ModalState extends State<Modal> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        displayItems == widget.test ?
-                        ElevatedButton(onPressed: (){
-                          setState(() {
-                            displayItems = widget.items;
-                          });
-                        }, 
-                        child: const Row(
-                          children: [
-                          Icon(Icons.arrow_left),
-                          Text("Prev"),
-                          ],
-                        )) : const SizedBox(),
-                        ElevatedButton(onPressed: (){
-                          if (displayItems == widget.test) {
-                            setData(selectedItems);
-                            Navigator.of(context).pop();
-                          }
-                          else {
-                            setState(() {
-                              displayItems = widget.test;
-                            });
-                          }
-                        }, 
-                        child: const Row(
-                          children: [
-                          Text("Next"),
-                          Icon(Icons.arrow_right),
-                          ],
-                        )),
+                        displayItems == widget.test
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    displayItems = widget.items;
+                                  });
+                                },
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.arrow_left),
+                                    Text("Prev"),
+                                  ],
+                                ))
+                            : const SizedBox(),
+                        ElevatedButton(
+                            onPressed: () {
+                              if (displayItems == widget.test) {
+                                PreferenceHelper.setString(
+                                    key: 'language', value: selectedItems[0]);
+                                PreferenceHelper.setStringList(
+                                    key: 'topics',
+                                    value: selectedItems.sublist(1));
+                                Navigator.of(context).pop();
+                              } else {
+                                setState(() {
+                                  displayItems = widget.test;
+                                });
+                              }
+                            },
+                            child: const Row(
+                              children: [
+                                Text("Next"),
+                                Icon(Icons.arrow_right),
+                              ],
+                            )),
                       ],
                     ),
                   )
                 ],
               ),
-              
             ),
           ],
         ),
