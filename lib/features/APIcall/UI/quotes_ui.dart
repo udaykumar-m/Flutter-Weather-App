@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,7 +25,6 @@ class QuotesBody extends StatefulWidget {
 }
 
 class _QuotesBodyState extends State<QuotesBody> {
-
   var copyText = '';
 
   @override
@@ -50,7 +51,11 @@ class _QuotesBodyState extends State<QuotesBody> {
                 );
               case QuotesSuccessfullState:
                 final responseState = state as QuotesSuccessfullState;
-                copyText =(responseState.quotes.choices?[0].message?.content).toString();
+                copyText = utf8.decode(
+                    (responseState.quotes.choices?[0].message?.content)
+                        .toString()
+                        .runes
+                        .toList());
                 return Container(
                   margin: const EdgeInsets.only(left: 15, right: 15),
                   child: Column(
