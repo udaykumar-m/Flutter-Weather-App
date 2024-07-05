@@ -13,12 +13,22 @@ class QuotesRepo {
   static GetQuotesAPI() async {
     var client = http.Client();
 
-    final _random = new Random();
+    String query;
+
     final topicsList = PreferenceHelper.getStringList('topics');
-    final topic = topicsList[_random.nextInt(topicsList.length)];
-    final query =
-        "generate a one line unique $topic quote in ${PreferenceHelper.getString('language')}";
-    print(query);
+    print('topics List : ${topicsList}');
+
+    if (topicsList.isNotEmpty) {
+      final _random = new Random();
+      final topic = topicsList[_random.nextInt(topicsList.length)];
+      query =
+          "generate a one line unique $topic quote in ${PreferenceHelper.getString('language')}";
+    }
+    else{
+      query = "generate a one line unique quote in ${PreferenceHelper.getString('language')}";
+    }
+      print(query);
+
 
     try {
       final body = {

@@ -24,7 +24,6 @@ class _HomepageState extends State<Homepage>
   @override
   void initState() {
     super.initState();
-    PreferenceHelper.initiate();
 
     checkInternetConnection();
 
@@ -35,6 +34,15 @@ class _HomepageState extends State<Homepage>
         hideKeyboard(context);
       }
     });
+
+    // PreferenceHelper.clear();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      PreferenceHelper.getString('language') == ''
+          ? showBottomSheetModal(context)
+          : null;
+    });
+
   }
 
   @override
@@ -57,13 +65,6 @@ class _HomepageState extends State<Homepage>
 
   @override
   Widget build(BuildContext context) {
-    // PreferenceHelper.clear();
-    print(PreferenceHelper.getString('language'));
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   PreferenceHelper.getString('language') == ''
-    //       ? showBottomSheetModal(context)
-    //       : null;
-    // });
 
     return GestureDetector(
       onTap: () {

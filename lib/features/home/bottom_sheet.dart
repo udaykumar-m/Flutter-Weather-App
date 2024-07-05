@@ -52,126 +52,129 @@ class _ModalState extends State<Modal> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2.0),
-                      color: Colors.white),
+    return Theme(
+      data: ThemeData.light(),
+      child: Wrap(
+        children: [
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.close),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2.0),
+                        color: Colors.white),
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Icon(Icons.close),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25)),
-                  color: Colors.white),
-              padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
-              child: Column(
-                children: [
-                  GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8.0,
-                      mainAxisSpacing: 8.0,
-                      childAspectRatio: 3,
-                    ),
-                    shrinkWrap: true,
-                    itemCount: displayItems.length,
-                    itemBuilder: (context, index) {
-                      final item = displayItems[index];
-                      final isSelected = selectedItems.contains(item);
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (isSelected) {
-                              selectedItems.remove(item);
-                            } else {
-                              displayItems == widget.items
-                                  ? selectedItems[0] = item
-                                  : selectedItems.add(item);
-                            }
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isSelected ? Colors.blue : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              item,
-                              style: TextStyle(
-                                color: isSelected ? Colors.white : Colors.black,
+              Container(
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25)),
+                    color: Colors.white),
+                padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+                child: Column(
+                  children: [
+                    GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
+                        childAspectRatio: 3,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: displayItems.length,
+                      itemBuilder: (context, index) {
+                        final item = displayItems[index];
+                        final isSelected = selectedItems.contains(item);
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (isSelected) {
+                                selectedItems.remove(item);
+                              } else {
+                                displayItems == widget.items
+                                    ? selectedItems[0] = item
+                                    : selectedItems.add(item);
+                              }
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: isSelected ? Colors.blue : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  color: isSelected ? Colors.white : Colors.black,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        displayItems == widget.test
-                            ? ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    displayItems = widget.items;
-                                  });
-                                },
-                                child: const Row(
-                                  children: [
-                                    Icon(Icons.arrow_left),
-                                    Text("Prev"),
-                                  ],
-                                ))
-                            : const SizedBox(),
-                        ElevatedButton(
-                            onPressed: () {
-                              if (displayItems == widget.test) {
-                                PreferenceHelper.setString(
-                                    key: 'language', value: selectedItems[0]);
-                                PreferenceHelper.setStringList(
-                                    key: 'topics',
-                                    value: selectedItems.sublist(1));
-                                Navigator.of(context).pop();
-                              } else {
-                                setState(() {
-                                  displayItems = widget.test;
-                                });
-                              }
-                            },
-                            child: const Row(
-                              children: [
-                                Text("Next"),
-                                Icon(Icons.arrow_right),
-                              ],
-                            )),
-                      ],
+                        );
+                      },
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          displayItems == widget.test
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      displayItems = widget.items;
+                                    });
+                                  },
+                                  child: const Row(
+                                    children: [
+                                      Icon(Icons.arrow_left),
+                                      Text("Prev"),
+                                    ],
+                                  ))
+                              : const SizedBox(),
+                          ElevatedButton(
+                              onPressed: () {
+                                if (displayItems == widget.test) {
+                                  PreferenceHelper.setString(
+                                      key: 'language', value: selectedItems[0]);
+                                  PreferenceHelper.setStringList(
+                                      key: 'topics',
+                                      value: selectedItems.sublist(1));
+                                  Navigator.of(context).pop();
+                                } else {
+                                  setState(() {
+                                    displayItems = widget.test;
+                                  });
+                                }
+                              },
+                              child: const Row(
+                                children: [
+                                  Text("Next"),
+                                  Icon(Icons.arrow_right),
+                                ],
+                              )),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:openai_app/features/home/homepage.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
+import 'package:openai_app/features/local_storage.dart';
 
 Future<void> main() async {
 
   await dotenv.load(fileName: ".env");
+
+  await PreferenceHelper.initiate();
 
   runApp(const MainApp());
 }
