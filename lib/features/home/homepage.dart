@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openai_app/features/APIcall/UI/tabs_ui.dart';
@@ -76,10 +77,10 @@ class _HomepageState extends State<Homepage>
           centerTitle: true,
           title: const Text("AI pal"),
           actions: [
-            IconButton(
+            kDebugMode? IconButton(
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Favorites())),
-                icon: const Icon(Icons.favorite))
+                icon: const Icon(Icons.favorite)) : const SizedBox()
           ],
         ),
         body: Column(
