@@ -49,6 +49,7 @@ class _ModalState extends State<Modal> {
 
   late List<String> displayItems;
   List<String> selectedItems = ["English"];
+  String header = "Select a preferred Language :";
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +84,20 @@ class _ModalState extends State<Modal> {
                 padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
                 child: Column(
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Text(
+                            header,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
                     GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -110,14 +125,16 @@ class _ModalState extends State<Modal> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: isSelected ? Colors.blue : Colors.grey[200],
+                              color:
+                                  isSelected ? Colors.blue : Colors.grey[200],
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Center(
                               child: Text(
                                 item,
                                 style: TextStyle(
-                                  color: isSelected ? Colors.white : Colors.black,
+                                  color:
+                                      isSelected ? Colors.white : Colors.black,
                                 ),
                               ),
                             ),
@@ -135,6 +152,7 @@ class _ModalState extends State<Modal> {
                                   onPressed: () {
                                     setState(() {
                                       displayItems = widget.items;
+                                      header = "Select a preferred language :";
                                     });
                                   },
                                   child: const Row(
@@ -156,6 +174,9 @@ class _ModalState extends State<Modal> {
                                 } else {
                                   setState(() {
                                     displayItems = widget.test;
+
+                                    header =
+                                        "Select Few topics that interests you :";
                                   });
                                 }
                               },
