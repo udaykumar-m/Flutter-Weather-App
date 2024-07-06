@@ -22,6 +22,8 @@ class _HomepageState extends State<Homepage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  bool language = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,10 +42,13 @@ class _HomepageState extends State<Homepage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       PreferenceHelper.getString('language') == ''
-          ? showBottomSheetModal(context)
+          ? showBottomSheetModal(context, () {
+              setState(() {
+                language = true;
+              });
+            })
           : null;
     });
-
   }
 
   @override
@@ -66,7 +71,6 @@ class _HomepageState extends State<Homepage>
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: () {
         hideKeyboard(context);
@@ -77,10 +81,17 @@ class _HomepageState extends State<Homepage>
           centerTitle: true,
           title: const Text("AI pal"),
           actions: [
-            kDebugMode? IconButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Favorites())),
-                icon: const Icon(Icons.favorite)) : const SizedBox()
+            kDebugMode
+                ? IconButton(
+                    onPressed: () {
+                      PreferenceHelper.clear();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Favorites()));
+                    },
+                    icon: const Icon(Icons.favorite))
+                : const SizedBox()
           ],
         ),
         body: Column(
@@ -88,17 +99,17 @@ class _HomepageState extends State<Homepage>
             if (_hasConnection == true)
               BlocProvider(
                 create: (context) => QuotesBloc(),
-                child: const Expanded(
+                child: Expanded(
                     flex: 2,
                     child: Column(
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
-                            child: Quotes(),
+                            padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
+                            child: language ? Quotes() : SizedBox(),
                           ),
                         ),
-                        Buttons(),
+                        const Buttons(),
                       ],
                     )),
               ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:openai_app/features/local_storage.dart';
 
-void showBottomSheetModal(context) {
+void showBottomSheetModal(context, Null Function() refresh) {
   final List<String> language = [
     "Hindi",
     "English",
-    "Telugu",
   ];
   final List<String> topics = [
     "Sports",
@@ -21,7 +20,7 @@ void showBottomSheetModal(context) {
     isDismissible: true,
     context: context,
     builder: (context) {
-      return Modal(items: language, test: topics);
+      return Modal(language: language, topics: topics, refresh: refresh);
     },
   );
 }
@@ -29,12 +28,14 @@ void showBottomSheetModal(context) {
 class Modal extends StatefulWidget {
   const Modal({
     super.key,
-    required this.items,
-    required this.test,
+    required this.language,
+    required this.topics,
+    this.refresh,
   });
 
-  final List<String> items;
-  final List<String> test;
+  final List<String> language;
+  final List<String> topics;
+  final Function()? refresh;
 
   @override
   _ModalState createState() => _ModalState();
@@ -44,7 +45,7 @@ class _ModalState extends State<Modal> {
   @override
   void initState() {
     super.initState();
-    displayItems = widget.items;
+    displayItems = widget.language;
   }
 
   late List<String> displayItems;
@@ -116,7 +117,7 @@ class _ModalState extends State<Modal> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (displayItems == widget.items &&
+                              if (displayItems == widget.language &&
                                   item != displayItems[1]) {
                                 errorText = "*This may not work as expected";
                               } else {
@@ -126,7 +127,7 @@ class _ModalState extends State<Modal> {
                               if (isSelected) {
                                 selectedItems.remove(item);
                               } else {
-                                displayItems == widget.items
+                                displayItems == widget.language
                                     ? selectedItems[0] = item
                                     : selectedItems.add(item);
                               }
@@ -163,13 +164,13 @@ class _ModalState extends State<Modal> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          displayItems == widget.test
+                          displayItems == widget.topics
                               ? ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      displayItems = widget.items;
+                                      displayItems = widget.language;
                                       header = "Select a preferred language :";
-                                      if (displayItems == widget.items &&
+                                      if (displayItems == widget.language &&
                                           selectedItems[0] != displayItems[1]) {
                                         errorText =
                                             "*This may not work as expected";
@@ -187,16 +188,17 @@ class _ModalState extends State<Modal> {
                               : const SizedBox(),
                           ElevatedButton(
                               onPressed: () {
-                                if (displayItems == widget.test) {
+                                if (displayItems == widget.topics) {
                                   PreferenceHelper.setString(
                                       key: 'language', value: selectedItems[0]);
                                   PreferenceHelper.setStringList(
                                       key: 'topics',
                                       value: selectedItems.sublist(1));
+                                  widget.refresh!();
                                   Navigator.of(context).pop();
                                 } else {
                                   setState(() {
-                                    displayItems = widget.test;
+                                    displayItems = widget.topics;
                                     errorText = '';
                                     header =
                                         "Select Few topics that interests you :";

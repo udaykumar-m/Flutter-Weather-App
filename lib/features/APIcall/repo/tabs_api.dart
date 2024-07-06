@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:openai_app/constants.dart';
 import 'package:openai_app/features/APIcall/model/Open_ai_model.dart';
 
+import '../../local_storage.dart';
+
 class TabsAPI {
   static GetTabsAPI(String searchText, String queryText) async {
     var client = http.Client();
@@ -13,12 +15,13 @@ class TabsAPI {
 
     if (queryText == "Meaning") {
       content =
-          "Define the word $searchText concisely and also concise sentence using the word $searchText";
+          "Define the word $searchText concisely in ${PreferenceHelper.getString('language')} and also concise sentence using the word $searchText in ${PreferenceHelper.getString('language')}";
     } else if (queryText == "Instagram") {
       content =
-          "Create a captivating Instagram caption on :  $searchText concisely";
+          "Create a captivating Instagram caption on :  $searchText concisely in ${PreferenceHelper.getString('language')}";
     } else if (queryText == "Twitter") {
-      content = "Compose a concise tweet about $searchText";
+      content =
+          "Compose a concise tweet about $searchText in ${PreferenceHelper.getString('language')}";
     }
 
     try {
@@ -34,8 +37,7 @@ class TabsAPI {
       final uri = Uri.https(ApiConstants.baseUrl, ApiConstants.params);
       final headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.authorizationHeader:
-            "Bearer ${dotenv.env['TOKEN'] ?? ''}"
+        HttpHeaders.authorizationHeader: "Bearer ${dotenv.env['TOKEN'] ?? ''}"
       };
       final response =
           await client.post(uri, headers: headers, body: jsonString);
