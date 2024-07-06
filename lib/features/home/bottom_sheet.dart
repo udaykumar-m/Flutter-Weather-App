@@ -50,6 +50,7 @@ class _ModalState extends State<Modal> {
   late List<String> displayItems;
   List<String> selectedItems = ["English"];
   String header = "Select a preferred Language :";
+  String errorText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +115,13 @@ class _ModalState extends State<Modal> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {
+                              if (displayItems == widget.items &&
+                                  item != displayItems[1]) {
+                                errorText = "*This may not work as expected";
+                              } else {
+                                errorText = '';
+                              }
+
                               if (isSelected) {
                                 selectedItems.remove(item);
                               } else {
@@ -142,6 +150,13 @@ class _ModalState extends State<Modal> {
                         );
                       },
                     ),
+                    errorText != ''
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Text(errorText,
+                                style: const TextStyle(color: Colors.red)),
+                          )
+                        : const SizedBox(),
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Row(
@@ -153,6 +168,13 @@ class _ModalState extends State<Modal> {
                                     setState(() {
                                       displayItems = widget.items;
                                       header = "Select a preferred language :";
+                                      if (displayItems == widget.items &&
+                                          selectedItems[0] != displayItems[1]) {
+                                        errorText =
+                                            "*This may not work as expected";
+                                      } else {
+                                        errorText = '';
+                                      }
                                     });
                                   },
                                   child: const Row(
@@ -174,7 +196,7 @@ class _ModalState extends State<Modal> {
                                 } else {
                                   setState(() {
                                     displayItems = widget.test;
-
+                                    errorText = '';
                                     header =
                                         "Select Few topics that interests you :";
                                   });
