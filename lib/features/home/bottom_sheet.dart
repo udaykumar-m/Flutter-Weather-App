@@ -63,6 +63,7 @@ class _ModalState extends State<Modal> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
+                  selectedItems = ["English"];
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
