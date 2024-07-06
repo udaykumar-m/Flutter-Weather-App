@@ -47,7 +47,7 @@ class _HomepageState extends State<Homepage>
                 language = true;
               });
             })
-          : null;
+          : language = true;
     });
   }
 

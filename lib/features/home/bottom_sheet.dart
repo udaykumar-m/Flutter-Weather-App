@@ -8,11 +8,15 @@ void showBottomSheetModal(context, Null Function() refresh) {
   ];
   final List<String> topics = [
     "Sports",
-    "Movie",
+    "Movies",
     "life",
     "Love",
-    "Breakup",
-    "Work"
+    "Comedy",
+    "Work",
+    "Music",
+    "Culture",
+    "Science",
+    "Society",
   ];
 
   showModalBottomSheet(
@@ -64,7 +68,8 @@ class _ModalState extends State<Modal> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
-                  selectedItems = ["English"];
+                  PreferenceHelper.setString(key: 'language', value: "English");
+                  widget.refresh!();
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
