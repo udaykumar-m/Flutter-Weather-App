@@ -7,16 +7,17 @@ void showBottomSheetModal(context, Null Function() refresh) {
     "English",
   ];
   final List<String> topics = [
-    "Sports",
-    "Movies",
-    "life",
+    "Motivation",
     "Love",
-    "Comedy",
-    "Work",
-    "Music",
-    "Culture",
+    "Life",
+    "Friendship",
+    "Success",
     "Science",
-    "Society",
+    "Music",
+    "Video Games",
+    "Comedy",
+    "Sports",
+    "Self-Love"
   ];
 
   showModalBottomSheet(
