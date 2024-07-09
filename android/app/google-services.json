@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1080983970935",
+    "project_id": "ai-pal-11875",
+    "storage_bucket": "ai-pal-11875.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080983970935:android:d5a943346414f294699272",
+        "android_client_info": {
+          "package_name": "com.devguy.ai_pal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvON1zuTSa4ZgSb7QzexJlsoXvb8ajENw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
