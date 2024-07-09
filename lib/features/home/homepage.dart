@@ -121,7 +121,7 @@ class _HomepageState extends State<Homepage>
                             padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
                             child: language
                                 ? Quotes(onNewQuote: getQuoteData)
-                                : SizedBox(),
+                                : const SizedBox(),
                           ),
                         ),
                         Buttons(currentQuote: currentQuote),
