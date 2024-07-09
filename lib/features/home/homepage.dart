@@ -69,7 +69,13 @@ class _HomepageState extends State<Homepage>
         _hasConnection = true;
       });
     });
+
     setState(() {});
+  }
+
+  var currentQuote = '';
+  void getQuoteData(String newQuote) {
+    currentQuote = newQuote;
   }
 
   @override
@@ -113,10 +119,12 @@ class _HomepageState extends State<Homepage>
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
-                            child: language ? Quotes() : SizedBox(),
+                            child: language
+                                ? Quotes(onNewQuote: getQuoteData)
+                                : SizedBox(),
                           ),
                         ),
-                        const Buttons(),
+                        Buttons(currentQuote: currentQuote),
                       ],
                     )),
               ),
@@ -166,7 +174,10 @@ class _HomepageState extends State<Homepage>
 class Buttons extends StatefulWidget {
   const Buttons({
     super.key,
+    required this.currentQuote,
   });
+
+  final String currentQuote;
 
   @override
   State<Buttons> createState() => _ButtonsState();
@@ -218,6 +229,20 @@ class _ButtonsState extends State<Buttons> {
       children: [
         ElevatedButton.icon(
             onPressed: () => showToast(context),
+            // onPressed: () async {
+            //   bool hasConnection =
+            //       await networkLogicClass().networkConnection();
+            //   networkLogicClass.networkLogic(context, hasConnection, () {
+            //     setState(() {
+            //       hasConnection = true;
+            //     });
+            //   });
+            //   if (hasConnection == true) {
+            //     context
+            //         .read<FirebaseBloc>()
+            //         .add((AddData(widget.currentQuote)));
+            //   }
+            // },
             label: const Text("Like"),
             icon: const Icon(Icons.favorite)),
         const SizedBox(
