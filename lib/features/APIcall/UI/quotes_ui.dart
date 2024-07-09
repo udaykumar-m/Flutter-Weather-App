@@ -9,16 +9,23 @@ import '../../home/custom_tooltip.dart';
 import '../bloc/quotes_bloc.dart';
 
 class Quotes extends StatelessWidget {
-  const Quotes({super.key});
+  const Quotes({super.key, this.onNewQuote});
+
+  final void Function(String)? onNewQuote;
 
   @override
   Widget build(BuildContext context) {
-    return const QuotesBody();
+    return QuotesBody(onNewQuote: onNewQuote);
   }
 }
 
 class QuotesBody extends StatefulWidget {
-  const QuotesBody({super.key});
+  const QuotesBody({
+    super.key,
+    this.onNewQuote,
+  });
+
+  final void Function(String)? onNewQuote;
 
   @override
   State<QuotesBody> createState() => _QuotesBodyState();
@@ -56,6 +63,7 @@ class _QuotesBodyState extends State<QuotesBody> {
                         .toString()
                         .runes
                         .toList());
+                widget.onNewQuote?.call(copyText);
                 return Container(
                   margin: const EdgeInsets.only(left: 15, right: 15),
                   child: Column(
