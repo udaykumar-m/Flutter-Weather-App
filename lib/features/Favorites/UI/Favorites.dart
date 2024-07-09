@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_udid/flutter_udid.dart';
-import 'package:openai_app/features/Favorites/model/firebase_model.dart';
 
 import '../bloc/firebase_bloc.dart';
 
@@ -23,9 +22,9 @@ class _FavoritesState extends State<Favorites> {
   }
 
   Future<void> _fetchUDID() async {
-    String _udid = await FlutterUdid.consistentUdid;
+    String udid = await FlutterUdid.consistentUdid;
     setState(() {
-      udid = _udid;
+      udid = udid;
     });
   }
 

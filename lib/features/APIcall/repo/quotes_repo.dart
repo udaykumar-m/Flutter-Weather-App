@@ -16,11 +16,11 @@ class QuotesRepo {
     String query;
 
     final topicsList = PreferenceHelper.getStringList('topics');
-    print('topics List : ${topicsList}');
+    print('topics List : $topicsList');
 
     if (topicsList.isNotEmpty) {
-      final _random = new Random();
-      final topic = topicsList[_random.nextInt(topicsList.length)];
+      final random = Random();
+      final topic = topicsList[random.nextInt(topicsList.length)];
       query =
           "generate a one line unique $topic quote in ${PreferenceHelper.getString('language')}";
     }
