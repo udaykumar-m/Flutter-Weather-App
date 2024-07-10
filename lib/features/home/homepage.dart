@@ -198,18 +198,18 @@ class _ButtonsState extends State<Buttons> {
         children: [
           RichText(
             text: TextSpan(
-              text: "Saving ",
+              text: "This ",
               style:
                   TextStyle(color: isDarkTheme ? Colors.black : Colors.white),
               children: <TextSpan>[
                 TextSpan(
-                  text: "Quotes",
+                  text: PreferenceHelper.getString('topic'),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: isDarkTheme ? Colors.black : Colors.white),
                 ),
                 TextSpan(
-                  text: " will be available from next Update",
+                  text: " Quote is added to Favorites.",
                   style: TextStyle(
                       color: isDarkTheme ? Colors.black : Colors.white),
                 ),
@@ -232,7 +232,6 @@ class _ButtonsState extends State<Buttons> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton.icon(
-            // onPressed: () => showToast(context),
             onPressed: () async {
               bool hasConnection =
                   await networkLogicClass().networkConnection();
@@ -242,11 +241,11 @@ class _ButtonsState extends State<Buttons> {
                 });
               });
               if (hasConnection == true) {
-                print("currentQuote in fav  : ${widget.currentQuote}");
                 context.read<FirebaseBloc>().add((AddData(FirebaseModel(
                     id: FirestoreService().generateDocumentId().id,
                     quote: widget.currentQuote,
                     word: PreferenceHelper.getString('topic')!))));
+                showToast(context);
               }
             },
             label: const Text("Like"),
