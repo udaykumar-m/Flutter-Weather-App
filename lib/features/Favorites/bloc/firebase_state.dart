@@ -24,3 +24,9 @@ class FirebaseSuccess extends FirebaseState {
 
   FirebaseSuccess(this.message);
 }
+
+class FirebaseDeleteSuccess extends FirebaseState {
+  final String message;
+
+  FirebaseDeleteSuccess(this.message);
+}

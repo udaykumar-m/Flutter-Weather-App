@@ -9,9 +9,6 @@ class FirestoreService {
     return _dbCollection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-        print("data firebase");
-        print(data);
         return FirebaseModel(
           id: doc.id,
           quote: data['quote'],
@@ -30,5 +27,9 @@ class FirestoreService {
 
   Future<void> deleteData(String id) {
     return _dbCollection.doc(id).delete();
+  }
+
+  dynamic generateDocumentId() {
+    return _dbCollection.doc();
   }
 }

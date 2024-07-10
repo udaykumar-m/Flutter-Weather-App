@@ -9,8 +9,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
 import 'package:openai_app/features/Favorites/UI/Favorites.dart';
 import 'package:openai_app/features/Favorites/bloc/firebase_bloc.dart';
+import 'package:openai_app/features/Favorites/model/firebase_model.dart';
 import 'package:openai_app/features/home/bottom_sheet.dart';
 import 'package:openai_app/features/local_storage.dart';
+import 'package:provider/provider.dart';
 
 import '../Favorites/repo/firestore_service.dart';
 
@@ -75,7 +77,13 @@ class _HomepageState extends State<Homepage>
 
   var currentQuote = '';
   void getQuoteData(String newQuote) {
-    currentQuote = newQuote;
+    if (currentQuote != newQuote) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          currentQuote = newQuote;
+        });
+      });
+    }
   }
 
   @override
@@ -97,11 +105,7 @@ class _HomepageState extends State<Homepage>
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                    create: (context) =>
-                                        FirebaseBloc(FirestoreService()),
-                                    child: const Favorites(),
-                                  )));
+                              builder: (context) => const Favorites()));
                     },
                     icon: const Icon(Icons.favorite))
                 : const SizedBox()
@@ -228,21 +232,23 @@ class _ButtonsState extends State<Buttons> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton.icon(
-            onPressed: () => showToast(context),
-            // onPressed: () async {
-            //   bool hasConnection =
-            //       await networkLogicClass().networkConnection();
-            //   networkLogicClass.networkLogic(context, hasConnection, () {
-            //     setState(() {
-            //       hasConnection = true;
-            //     });
-            //   });
-            //   if (hasConnection == true) {
-            //     context
-            //         .read<FirebaseBloc>()
-            //         .add((AddData(widget.currentQuote)));
-            //   }
-            // },
+            // onPressed: () => showToast(context),
+            onPressed: () async {
+              bool hasConnection =
+                  await networkLogicClass().networkConnection();
+              networkLogicClass.networkLogic(context, hasConnection, () {
+                setState(() {
+                  hasConnection = true;
+                });
+              });
+              if (hasConnection == true) {
+                print("currentQuote in fav  : ${widget.currentQuote}");
+                context.read<FirebaseBloc>().add((AddData(FirebaseModel(
+                    id: FirestoreService().generateDocumentId().id,
+                    quote: widget.currentQuote,
+                    word: PreferenceHelper.getString('topic')!))));
+              }
+            },
             label: const Text("Like"),
             icon: const Icon(Icons.favorite)),
         const SizedBox(
