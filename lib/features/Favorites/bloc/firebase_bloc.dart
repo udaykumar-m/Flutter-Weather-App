@@ -40,7 +40,10 @@ class FirebaseBloc extends Bloc<FirebaseEvent, FirebaseState> {
         emit(FirebaseLoading());
         print(event.data);
         await _firestoreService.deleteData(event.data.id);
-        emit(FirebaseSuccess('Data deleted successfully'));
+        emit(FirebaseDeleteSuccess('Data deleted successfully'));
+        emit(FirebaseLoading());
+        final data = await _firestoreService.getData().first;
+        emit(FirebaseLoaded(data));
       } catch (e) {
         emit(FirebaseError(e.toString()));
       }
