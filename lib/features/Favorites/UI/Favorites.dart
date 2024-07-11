@@ -12,20 +12,10 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
-  String udid = '';
-
   @override
   void initState() {
     context.read<FirebaseBloc>().add(DataLoading());
     super.initState();
-    _fetchUDID();
-  }
-
-  Future<void> _fetchUDID() async {
-    String udid = await FlutterUdid.consistentUdid;
-    setState(() {
-      udid = udid;
-    });
   }
 
   @override
@@ -48,8 +38,8 @@ class _FavoritesState extends State<Favorites> {
                 itemCount: state.data.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(state.data[index].quote),
-                    subtitle: Text(state.data[index].word),
+                    title: Text(state.data[index].word),
+                    subtitle: Text(state.data[index].text),
                     trailing: IconButton(
                       onPressed: () {
                         context
