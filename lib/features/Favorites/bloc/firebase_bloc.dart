@@ -38,7 +38,6 @@ class FirebaseBloc extends Bloc<FirebaseEvent, FirebaseState> {
     on<DeleteData>((event, emit) async {
       try {
         emit(FirebaseLoading());
-        print(event.data);
         await _firestoreService.deleteData(event.data.id);
         emit(FirebaseDeleteSuccess('Data deleted successfully'));
         emit(FirebaseLoading());
