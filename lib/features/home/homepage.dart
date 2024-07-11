@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +15,6 @@ import 'package:openai_app/features/Favorites/bloc/firebase_bloc.dart';
 import 'package:openai_app/features/Favorites/model/firebase_model.dart';
 import 'package:openai_app/features/home/bottom_sheet.dart';
 import 'package:openai_app/features/local_storage.dart';
-import 'package:provider/provider.dart';
 
 import '../Favorites/repo/firestore_service.dart';
 
@@ -54,6 +56,12 @@ class _HomepageState extends State<Homepage>
             })
           : language = true;
     });
+
+    PreferenceHelper.getString('deviceId') == ''
+        ? getDeviceId().then((value) async {
+            await PreferenceHelper.setString(key: 'deviceId', value: value!);
+          })
+        : null;
   }
 
   @override
@@ -84,6 +92,18 @@ class _HomepageState extends State<Homepage>
         });
       });
     }
+  }
+
+  static Future<String?> getDeviceId() async {
+    final deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id; // androidId
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor;
+    }
+    return null; // Unsupported platform
   }
 
   @override
@@ -191,7 +211,6 @@ class _ButtonsState extends State<Buttons> {
   void showToast(BuildContext context) {
     bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-    print(isDarkTheme);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +262,7 @@ class _ButtonsState extends State<Buttons> {
               if (hasConnection == true) {
                 context.read<FirebaseBloc>().add((AddData(FirebaseModel(
                     id: FirestoreService().generateDocumentId().id,
-                    quote: widget.currentQuote,
+                    text: widget.currentQuote,
                     word: PreferenceHelper.getString('topic')!))));
                 showToast(context);
               }

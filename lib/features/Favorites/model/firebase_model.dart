@@ -1,21 +1,21 @@
 class FirebaseModel {
   String id;
-  String quote;
+  String text;
   String word;
 
   FirebaseModel({
     required this.id,
-    required this.quote,
+    required this.text,
     required this.word,
   });
 
   FirebaseModel copyWith({
     String? id,
-    String? quote,
+    String? text,
     String? word,
   }) {
     return FirebaseModel(
-      quote: quote ?? this.quote,
+      text: text ?? this.text,
       word: word ?? this.word,
       id: id ?? this.id,
     );

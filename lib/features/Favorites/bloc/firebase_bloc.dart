@@ -17,7 +17,7 @@ class FirebaseBloc extends Bloc<FirebaseEvent, FirebaseState> {
         final data = await _firestoreService.getData().first;
         emit(FirebaseLoaded(data));
       } catch (e) {
-        emit(FirebaseError('Failed to load todos.'));
+        emit(FirebaseError('Failed to load Data.'));
       }
     });
 
