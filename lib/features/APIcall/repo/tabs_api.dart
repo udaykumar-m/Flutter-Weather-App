@@ -41,7 +41,6 @@ class TabsAPI {
       };
       final response =
           await client.post(uri, headers: headers, body: jsonString);
-      print(response.body.toString());
       OpenAiRes resp = openAiResFromJson(response.body.toString());
 
       return resp;
