@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_udid/flutter_udid.dart';
 
 import '../bloc/firebase_bloc.dart';
 
@@ -60,7 +59,7 @@ class _FavoritesState extends State<Favorites> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  duration: Duration(seconds: 2),
+                  duration: const Duration(seconds: 2),
                   backgroundColor: Colors.green,
                 ),
               );
