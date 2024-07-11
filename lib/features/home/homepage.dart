@@ -118,17 +118,15 @@ class _HomepageState extends State<Homepage>
           centerTitle: true,
           title: const Text("AI pal"),
           actions: [
-            kDebugMode
-                ? IconButton(
-                    onPressed: () {
-                      // PreferenceHelper.clear();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Favorites()));
-                    },
-                    icon: const Icon(Icons.favorite))
-                : const SizedBox()
+            IconButton(
+                onPressed: () {
+                  // PreferenceHelper.clear();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Favorites()));
+                },
+                icon: const Icon(Icons.favorite))
           ],
         ),
         body: Column(
