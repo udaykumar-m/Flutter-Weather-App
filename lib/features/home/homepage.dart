@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +11,12 @@ import 'package:openai_app/features/APIcall/UI/quotes_ui.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:openai_app/features/APIcall/bloc/quotes_bloc.dart';
 import 'package:openai_app/features/Favorites/UI/Favorites.dart';
+import 'package:openai_app/features/Favorites/bloc/firebase_bloc.dart';
+import 'package:openai_app/features/Favorites/model/firebase_model.dart';
 import 'package:openai_app/features/home/bottom_sheet.dart';
 import 'package:openai_app/features/local_storage.dart';
+
+import '../Favorites/repo/firestore_service.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -49,6 +56,12 @@ class _HomepageState extends State<Homepage>
             })
           : language = true;
     });
+
+    PreferenceHelper.getString('deviceId') == ''
+        ? getDeviceId().then((value) async {
+            await PreferenceHelper.setString(key: 'deviceId', value: value!);
+          })
+        : null;
   }
 
   @override
@@ -66,7 +79,31 @@ class _HomepageState extends State<Homepage>
         _hasConnection = true;
       });
     });
+
     setState(() {});
+  }
+
+  var currentQuote = '';
+  void getQuoteData(String newQuote) {
+    if (currentQuote != newQuote) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          currentQuote = newQuote;
+        });
+      });
+    }
+  }
+
+  static Future<String?> getDeviceId() async {
+    final deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id; // androidId
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor;
+    }
+    return null; // Unsupported platform
   }
 
   @override
@@ -81,17 +118,15 @@ class _HomepageState extends State<Homepage>
           centerTitle: true,
           title: const Text("AI pal"),
           actions: [
-            kDebugMode
-                ? IconButton(
-                    onPressed: () {
-                      PreferenceHelper.clear();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Favorites()));
-                    },
-                    icon: const Icon(Icons.favorite))
-                : const SizedBox()
+            IconButton(
+                onPressed: () {
+                  // PreferenceHelper.clear();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Favorites()));
+                },
+                icon: const Icon(Icons.favorite))
           ],
         ),
         body: Column(
@@ -106,10 +141,12 @@ class _HomepageState extends State<Homepage>
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
-                            child: language ? Quotes() : SizedBox(),
+                            child: language
+                                ? Quotes(onNewQuote: getQuoteData)
+                                : const SizedBox(),
                           ),
                         ),
-                        const Buttons(),
+                        Buttons(currentQuote: currentQuote),
                       ],
                     )),
               ),
@@ -159,7 +196,10 @@ class _HomepageState extends State<Homepage>
 class Buttons extends StatefulWidget {
   const Buttons({
     super.key,
+    required this.currentQuote,
   });
+
+  final String currentQuote;
 
   @override
   State<Buttons> createState() => _ButtonsState();
@@ -169,25 +209,24 @@ class _ButtonsState extends State<Buttons> {
   void showToast(BuildContext context) {
     bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-    print(isDarkTheme);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RichText(
             text: TextSpan(
-              text: "Saving ",
+              text: "This ",
               style:
                   TextStyle(color: isDarkTheme ? Colors.black : Colors.white),
               children: <TextSpan>[
                 TextSpan(
-                  text: "Quotes",
+                  text: PreferenceHelper.getString('topic'),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: isDarkTheme ? Colors.black : Colors.white),
                 ),
                 TextSpan(
-                  text: " will be available from next Update",
+                  text: " Quote is added to Favorites.",
                   style: TextStyle(
                       color: isDarkTheme ? Colors.black : Colors.white),
                 ),
@@ -210,7 +249,22 @@ class _ButtonsState extends State<Buttons> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton.icon(
-            onPressed: () => showToast(context),
+            onPressed: () async {
+              bool hasConnection =
+                  await networkLogicClass().networkConnection();
+              networkLogicClass.networkLogic(context, hasConnection, () {
+                setState(() {
+                  hasConnection = true;
+                });
+              });
+              if (hasConnection == true) {
+                context.read<FirebaseBloc>().add((AddData(FirebaseModel(
+                    id: FirestoreService().generateDocumentId().id,
+                    text: widget.currentQuote,
+                    word: PreferenceHelper.getString('topic')!))));
+                showToast(context);
+              }
+            },
             label: const Text("Like"),
             icon: const Icon(Icons.favorite)),
         const SizedBox(

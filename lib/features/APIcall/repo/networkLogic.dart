@@ -17,7 +17,6 @@ class networkLogicClass {
                   bool? newConnectionStatus =
                       await InternetConnectionChecker().hasConnection;
                   if (newConnectionStatus == true) {
-                    print("working");
                     Navigator.pop(context);
                     updateState();
                   }
