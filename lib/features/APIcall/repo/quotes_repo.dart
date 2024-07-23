@@ -30,7 +30,7 @@ class QuotesRepo {
 
     try {
       final body = {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4o-mini",
         "messages": [
           {
             "role": "user",
@@ -50,7 +50,7 @@ class QuotesRepo {
           await client.post(uri, headers: headers, body: jsonString);
 
       OpenAiRes resp = openAiResFromJson(response.body.toString());
-
+      // print(resp.model.toString());
       return resp;
     } catch (e) {
       print(e.toString());
