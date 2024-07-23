@@ -50,7 +50,7 @@ class QuotesRepo {
           await client.post(uri, headers: headers, body: jsonString);
 
       OpenAiRes resp = openAiResFromJson(response.body.toString());
-      print(resp.model.toString());
+      // print(resp.model.toString());
       return resp;
     } catch (e) {
       print(e.toString());
